@@ -24,6 +24,7 @@ This project is a machine learning-based diabetes prediction tool designed to es
 3. Open the front-end in your browser to interact with the tool and receive predictions.
 4. Download requirements to run the code
 5. ***You may need to adjust file locations in the code to run locally.***
+   -may need to adjust dataset in model and may need to adjust index.html or app.py to a templates folder.
 
 Feel free to explore the code and enjoy.
 
