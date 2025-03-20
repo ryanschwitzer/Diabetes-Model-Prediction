@@ -23,7 +23,7 @@ This project is a machine learning-based diabetes prediction tool designed to es
 2. Run the Flask API to serve the machine learning model.
 3. Open the front-end in your browser to interact with the tool and receive predictions.
 4. Download requirements to run the code
-5. **You may need to adjust file locations in the code to run locally.**
+5. ***You may need to adjust file locations in the code to run locally.***
 
 Feel free to explore the code and enjoy.
 
