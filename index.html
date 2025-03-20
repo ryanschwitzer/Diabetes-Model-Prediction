@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .info {
+            width: 40%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            width: 100%;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        label {
+            text-align: left;
+            width: 100%;
+        }
+        input, select, button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        .performance, .about-creator {
+            background-color: #e9f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            width: 48%; /* Slightly smaller width to fit next to each other */
+            margin-top: 40px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .performance h3, .about-creator h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+        }
+        .performance p, .about-creator p {
+            font-size: 1.2em;
+            color: #34495e;
+        }
+        .performance .highlight, .about-creator a {
+            font-weight: bold;
+            color: green;
+        }
+        .about-creator ul {
+            list-style: none;
+            padding: 0;
+        }
+        .about-creator ul li {
+            margin: 5px 0;
+        }
+        .about-creator a {
+            text-decoration: none;
+            color: blue; /* Change link color to blue */
+        }
+        .about-creator a:hover {
+            color: darkblue;
+        }
+        /* Additional margin to add more space between the sections */
+        .performance {
+            margin-right: 20px;
+        }
+        .about-creator {
+            margin-left: 20px;
+        }
+
+        /* FAQ Styles */
+        .faq {
+            margin-top: 40px;
+            width: 100%;
+        }
+        .faq h2 {
+            text-align: center;
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .question {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .answer {
+            display: none;
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function toggleAnswer(event) {
+            const answer = event.target.nextElementSibling;
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Diabetes Prediction Model</h1>
+        <p>Use this calculator to estimate your risk of diabetes based on key health indicators.</p>
+    </div>
+    <div class="content">
+        <div class="container">
+            <h2>Diabetes Prediction Form</h2>
+            <form action="/" method="POST">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" step="0.1" required>
+                
+                <label for="bmi">BMI:</label>
+                <input type="number" id="bmi" name="bmi" step="0.1" required>
+                
+                <label for="HbA1c_level">HbA1c Level:</label>
+                <input type="number" id="HbA1c_level" name="HbA1c_level" step="0.1" required>
+                
+                <label for="blood_glucose_level">Blood Glucose Level:</label>
+                <input type="number" id="blood_glucose_level" name="blood_glucose_level" step="0.1" required>
+                
+                <label for="hypertension">Hypertension:</label>
+                <select id="hypertension" name="hypertension" required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                
+                <label for="heart_disease">Heart Disease:</label>
+                <select id="heart_disease" name="heart_disease" required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                
+                <button type="submit" value="predict">Submit</button>
+            </form>
+
+            {% if prediction_text %}
+            <div class="prediction-result">
+                <h2>{{ prediction_text }}</h2>
+            </div>
+            {% endif %}
+        </div>
+        <div class="info">
+            <h2>Understanding the Inputs</h2>
+            <p><strong>Age:</strong> Your age in years.</p>
+            <p><strong>BMI:</strong> Body Mass Index, a measure of body fat.</p>
+            <p><strong>HbA1c Level:</strong> A measure of average blood sugar levels over the past 3 months.</p>
+            <p><strong>Blood Glucose Level:</strong> Your current blood sugar level.</p>
+            <p><strong>Hypertension:</strong> High blood pressure.</p>
+            <p><strong>Heart Disease:</strong> Presence of heart-related conditions.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="performance">
+            <h3>🚀 Model Performance: Exceptional Accuracy & Reliability!</h3>
+            <p><strong>✅ Outstanding Accuracy: </strong><span class="highlight">96.3%</span> - The model predicts diabetes correctly over 96% of the time.</p>
+            <p><strong>✅ High Precision: </strong><span class="highlight">85%</span> - Accurate when predicting diabetes cases, minimizing false alarms.</p>
+            <p><strong>✅ Strong Recall: </strong><span class="highlight">68%</span> - Effectively detects 7 out of every 10 actual diabetes cases.</p>
+            <p><strong>✅ Balanced F1 Score: </strong><span class="highlight">76%</span> - Great performance in both identifying diabetes and minimizing errors.</p>
+            <p><strong>✅ Elite-Level ROC-AUC Score: </strong><span class="highlight">96%</span> - Nearly perfect ability to differentiate between diabetic and non-diabetic cases.</p>
+            <p><strong>✅ Consistent Performance Across Tests: </strong><span class="highlight">96.2% mean cross-validation accuracy</span> - Stable and highly generalizable results.</p>
+        </div>
+
+        <div class="about-creator">
+            <h2>About the Creator</h2>
+            <p>Hello, I'm Ryan Schwitzer, a highly motivated high school student. I am passionate about programming, data science, and AI, and I am currently pursuing certifications in Python, Data Science, and Machine Learning. I enjoy developing innovative projects and continually learning new technical skills.</p>
+            <p>Check out my projects and connect with me:</p>
+            <ul>
+                <li><a href="https://www.linkedin.com/in/ryan-schwitzer-a06636346/" target="_blank">LinkedIn</a></li>
+                <li><a href="https://github.com/ryanschwitzer/" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq">
+        <h2>FAQ</h2>
+        <p class="question" onclick="toggleAnswer(event)">How does the model work?</p>
+        <p class="answer">The model uses machine learning techniques to analyze a variety of health factors, including BMI, age, blood glucose levels, and medical history, to predict the likelihood of a person developing diabetes.</p>
+        
+        <p class="question" onclick="toggleAnswer(event)">What should I do if I get a high-risk prediction?</p>
+        <p class="answer">If you receive a high-risk prediction, it is recommended that you consult with a healthcare provider to confirm your diagnosis and discuss lifestyle changes, potential medical treatments, or additional testing.</p>
+        
+        <p class="question" onclick="toggleAnswer(event)">Is my data stored when I use this tool?</p>
+        <p class="answer">No, your data is not stored when using this tool. All data entered is processed in real-time, and no personal information is kept after the session ends.</p>
+        
+        <p class="question" onclick="toggleAnswer(event)">Can this model diagnose diabetes?</p>
+        <p class="answer">This model does not provide a diagnosis. It only predicts the likelihood of developing diabetes based on inputted health factors. A formal diagnosis must be made by a medical professional.</p>
+        
+        <p class="question" onclick="toggleAnswer(event)">What are the most important factors affecting diabetes risk?</p>
+        <p class="answer">The most important factors include age, BMI, blood glucose levels, blood pressure, and family history of diabetes (This model does not evaluate genetic factors). Lifestyle factors such as diet and physical activity also play a significant role in diabetes risk.</p>
+    </div>
+</body>
+</html>
