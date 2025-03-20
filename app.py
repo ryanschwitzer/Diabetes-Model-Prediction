@@ -46,6 +46,8 @@ def prediction():
         # Predict probability
         prediction_prob = model.predict_proba(new_inputs)[0][1]
 
+        prediction_prob = prediction_prob * 100
+
         # Apply threshold (0.35)
         y_pred_done = int(prediction_prob >= 0.35)
 
